@@ -2,6 +2,7 @@
 $user = $_POST["user"];
 $pass = $_POST["password"];
 echo "Datos recibidos: user: $user, password: $pass <br/>";
+
 //Datos de conexion
 $servername = "sql3.freemysqlhosting.net"; // URL del servidor
 $username = "sql3703885"; // Nombre de usuario de la base de datos
@@ -14,16 +15,13 @@ if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 // Consulta SQL para verificar si existe un registro en la tabla 'users'
-$sql = " SELECT * FROM users WHERE user = '$user' AND password = '$pass'; ";
+$sql = " INSERT INTO users (user, password) VALUES ('$user', '$pass'); ";
 //Ejecutar consulta
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    // El registro existe en la tabla 'users'
-    echo "Login con '$user' correcto.";
-} else {
-    // El registro no existe en la tabla 'users'
-    echo "Login con '$user' incorrecto.";
-}
+
+$conn->query($sql);
 
 $conn->close();
+
+echo "Datos insertados";
+
 ?>

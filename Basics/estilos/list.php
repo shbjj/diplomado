@@ -1,7 +1,4 @@
 <?php
-$user = $_POST["user"];
-$pass = $_POST["password"];
-echo "Datos recibidos: user: $user, password: $pass <br/>";
 //Datos de conexion
 $servername = "sql3.freemysqlhosting.net"; // URL del servidor
 $username = "sql3703885"; // Nombre de usuario de la base de datos
@@ -13,17 +10,20 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
-// Consulta SQL para verificar si existe un registro en la tabla 'users'
-$sql = " SELECT * FROM users WHERE user = '$user' AND password = '$pass'; ";
+// Consulta SQL 
+$sql = " SELECT id, user, password FROM users; ";
 //Ejecutar consulta
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    // El registro existe en la tabla 'users'
-    echo "Login con '$user' correcto.";
-} else {
-    // El registro no existe en la tabla 'users'
-    echo "Login con '$user' incorrecto.";
+$resultados = $conn->query($sql);
+
+if ( $resultados->num_rows > 0 ){
+    //Convertir los resultados en un array
+    $rows = $resultados->fetch_all(MYSQLI_ASSOC);
+
+    foreach( $rows as $row){
+        echo "ID: " . $row["id"] ." User: " . $row["user"] . ", Contraseña: " . $row["password"] . "<br/>";
+    }
 }
 
 $conn->close();
+
 ?>
